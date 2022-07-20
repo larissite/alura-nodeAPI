@@ -2,15 +2,19 @@ import livros from "../models/Livro.js";
 
 class LivroController {
   static listarLivros = (req, res) => {
-    livros.find((err, livros) => {
-      res.status(200).json(livros);
+    livros.find()
+          .populate('autor')
+          .exec((err, livros) => {
+             res.status(200).json(livros);
     });
   };
 
   static listarLivrosPorId = (req, res) => {
     const id = req.params.id;
 
-    livros.findById(id, (err, livros) => {
+    livros.findById(id)
+          .populate('autor','nome')
+          .exec((err, livros) => {
       if (err) {
         res
           .status(400)
